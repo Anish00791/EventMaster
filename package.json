@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "tsx server/index.ts",
-    "build": "vite build && esbuild server/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist",
+    "build": "vite build && esbuild server/index.ts --platform=node --bundle --format=esm --outdir=dist --external:react --external:react-dom",
     "start": "cross-env NODE_ENV=production node dist/index.js",
     "check": "tsc",
     "db:generate": "drizzle-kit generate:pg",
@@ -79,6 +79,7 @@
     "vaul": "^1.1.0",
     "wouter": "^3.3.5",
     "ws": "^8.18.0",
+    "cors": "^2.8.5",
     "zod": "^3.23.8",
     "zod-validation-error": "^3.4.0"
   },
