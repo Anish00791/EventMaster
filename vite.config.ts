@@ -28,6 +28,7 @@ export default defineConfig(async () => ({
   outDir: '../dist/client',
   emptyOutDir: true,
   rollupOptions: {
+      external: ['lightningcss', 'detect-libc'],
     output: {
       manualChunks: {
         react: ['react', 'react-dom'],

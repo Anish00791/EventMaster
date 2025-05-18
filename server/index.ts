@@ -1,5 +1,10 @@
+// Load environment variables using dotenv
 import 'dotenv/config';
-import express, { type Request, Response, NextFunction } from "express";
+
+// Replace require() with import
+import path from 'path';
+import express from 'express';
+import { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
 import { PgStorage } from './pg-storage';
