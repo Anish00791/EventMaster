@@ -28,7 +28,7 @@ export default function AuthPage() {
       password: "",
       name: "",
       email: "",
-      role: "participant" as const,
+      role: "organizer" | "participant" as const,
     },
   });
 
@@ -81,17 +81,65 @@ export default function AuthPage() {
 
               <TabsContent value="register">
                 <form
-                  onSubmit={registerForm.handleSubmit((data) =>
-                    registerMutation.mutate(data)
-                  )}
+                  onSubmit={registerForm.handleSubmit((data) => {
+                    console.log('Form data before submission:', data);
+                    
+                    // Ensure all required fields are present and properly formatted
+                    const formData = {
+                      username: data.username?.trim(),
+                      password: data.password,
+                      name: data.name?.trim(),
+                      email: data.email?.trim(),
+                      role: data.role || "participant"
+                    };
+                    
+                    // Validate that all required fields are present
+                    if (!formData.username || !formData.password || !formData.name || !formData.email || !formData.role) {
+                      console.error('Missing required fields:', {
+                        hasUsername: !!formData.username,
+                        hasPassword: !!formData.password,
+                        hasName: !!formData.name,
+                        hasEmail: !!formData.email,
+                        hasRole: !!formData.role
+                      });
+                      
+                      // Set appropriate error messages
+                      if (!formData.username) registerForm.setError("username", { message: "Username is required" });
+                      if (!formData.password) registerForm.setError("password", { message: "Password is required" });
+                      if (!formData.name) registerForm.setError("name", { message: "Name is required" });
+                      if (!formData.email) registerForm.setError("email", { message: "Email is required" });
+                      if (!formData.role) registerForm.setError("role", { message: "Role is required" });
+                      
+                      return;
+                    }
+                    
+                    // Log validation state
+                    console.log('Form validation state:', registerForm.formState);
+                    console.log('Submitting registration with data:', { ...formData, password: '[REDACTED]' });
+                    
+                    registerMutation.mutate(formData, {
+                      onError: (error) => {
+                        console.error('Registration error:', error);
+                        // Set the root error message from the server
+                        registerForm.setError("root", {
+                          type: "server",
+                          message: error.message
+                        });
+                      }
+                    });
+                  })}
                   className="space-y-4"
                 >
                   <div>
                     <Label>Account Type</Label>
                     <RadioGroup
-                      defaultValue={registerForm.getValues("role")}
+                      defaultValue="participant"
+                      value={registerForm.getValues("role")}
                       className="grid grid-cols-2 gap-4 mt-2"
-                      onValueChange={(value) => registerForm.setValue("role", value as "organizer" | "participant")}
+                      onValueChange={(value) => {
+                        registerForm.setValue("role", value as "organizer" | "participant", { shouldValidate: true });
+                        console.log('Role selected:', value);
+                      }}
                     >
                       <div>
                         <RadioGroupItem
@@ -127,6 +175,11 @@ export default function AuthPage() {
                       id="register-name"
                       {...registerForm.register("name")}
                     />
+                    {registerForm.formState.errors.name && (
+                      <p className="text-sm text-destructive mt-1">
+                        {registerForm.formState.errors.name.message}
+                      </p>
+                    )}
                   </div>
                   <div>
                     <Label htmlFor="register-email">Email</Label>
@@ -135,6 +188,11 @@ export default function AuthPage() {
                       type="email"
                       {...registerForm.register("email")}
                     />
+                    {registerForm.formState.errors.email && (
+                      <p className="text-sm text-destructive mt-1">
+                        {registerForm.formState.errors.email.message}
+                      </p>
+                    )}
                   </div>
                   <div>
                     <Label htmlFor="register-username">Username</Label>
@@ -142,6 +200,11 @@ export default function AuthPage() {
                       id="register-username"
                       {...registerForm.register("username")}
                     />
+                    {registerForm.formState.errors.username && (
+                      <p className="text-sm text-destructive mt-1">
+                        {registerForm.formState.errors.username.message}
+                      </p>
+                    )}
                   </div>
                   <div>
                     <Label htmlFor="register-password">Password</Label>
@@ -150,6 +213,11 @@ export default function AuthPage() {
                       type="password"
                       {...registerForm.register("password")}
                     />
+                    {registerForm.formState.errors.password && (
+                      <p className="text-sm text-destructive mt-1">
+                        {registerForm.formState.errors.password.message}
+                      </p>
+                    )}
                   </div>
                   {registerForm.formState.errors.root?.message && (
                     <p className="text-sm text-destructive">

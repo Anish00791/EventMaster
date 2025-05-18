@@ -1,11 +1,12 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { setupAuth } from "./auth";
-import { storage } from "./storage";
+import { PgStorage } from "./pg-storage";
 import { insertEventSchema } from "@shared/schema";
 import { z } from "zod";
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  const storage = new PgStorage();
   setupAuth(app);
 
   app.get("/api/events", async (req, res) => {
