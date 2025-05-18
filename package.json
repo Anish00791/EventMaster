@@ -5,11 +5,9 @@
   "scripts": {
     "postinstall": "npx update-browserslist-db@latest",
     "dev": "tsx server/index.ts",
-    "build": "cross-env LIGHTNINGCSS_SKIP_BINARY=1 npm run client:build && cross-env LIGHTNINGCSS_SKIP_BINARY=1 npm run server:build",
+    "build": "cross-env LIGHTNINGCSS_SKIP_BINARY=1 npm run client:build && npm run server:build",
     "client:build": "vite build",
-   "server:build": "cross-env LIGHTNINGCSS_SKIP_BINARY=1 esbuild \"server/**/*.ts\" --bundle --outdir=dist/server --format=esm --platform=node --external:lightningcss --external:lightningcss/node/* --define:process.env.LIGHTNINGCSS_SKIP_BINARY=\\\"1\\\"",
-
-
+    "server:build": "cross-env LIGHTNINGCSS_SKIP_BINARY=1 esbuild server/index.ts --bundle --platform=node --format=esm --outfile=dist/server/index.js --external:dotenv-esm/config --external:lightningcss --external:lightningcss/node/* --external:fs,path,os,url,http,https,querystring,util,child_process,net,tls,stream,crypto,events,buffer,zlib,cluster,dgram,dns,module,readline,repl,tty,vm,constants,perf_hooks --define:process.env.LIGHTNINGCSS_SKIP_BINARY=\"1\"",
     "start": "cross-env NODE_ENV=production node dist/server/index.js",
     "check": "tsc",
     "db:generate": "drizzle-kit generate:pg",
@@ -58,10 +56,10 @@
     "cross-env": "^7.0.3",
     "date-fns": "^3.6.0",
     "dotenv": "^16.5.0",
+    "dotenv-esm": "^16.0.3-4",
     "drizzle-orm": "^0.39.1",
     "drizzle-zod": "^0.7.0",
     "embla-carousel-react": "^8.3.0",
-
     "express": "^4.21.2",
     "express-session": "^1.18.1",
     "framer-motion": "^11.13.1",
