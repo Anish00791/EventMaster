@@ -1,4 +1,4 @@
-import type { User, Event, Team, Registration, InsertUser } from "@shared/schema";
+import type { User, Event, Team, Registration, InsertUser } from "../shared/schema.js";
 import session from "express-session";
 
 export interface IStorage {

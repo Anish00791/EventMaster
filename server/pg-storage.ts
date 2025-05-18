@@ -1,10 +1,10 @@
-import { IStorage } from "./storage.interface";
-import type { User, Event, Team, Registration, InsertUser } from "@shared/schema";
+import { IStorage } from "./storage.interface.js";
+import type { User, Event, Team, Registration, InsertUser } from "../shared/schema.js";
 import session from "express-session";
 import connectPgSimple from "connect-pg-simple";
-import { db, pool } from "./db";
+import { db, pool } from "./db.js";
 import { eq } from "drizzle-orm";
-import { users, events, teams, registrations } from "@shared/schema";
+import { users, events, teams, registrations } from "../shared/schema.js";
 
 const PgSessionStore = connectPgSimple(session);
 

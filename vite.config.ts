@@ -22,12 +22,12 @@ export default defineConfig(async () => ({
       "@": path.resolve(__dirname, "client", "src"),
       "@shared": path.resolve(__dirname, "shared"),
     },
-  },
-  root: './client',
+  },  root: './client',
   build: {
-  outDir: '../dist/client',
-  emptyOutDir: true,
-  rollupOptions: {
+    outDir: '../dist/client',
+    emptyOutDir: true,
+    ssr: false,
+    rollupOptions: {
       external: ['lightningcss', 'detect-libc'],
     output: {
       manualChunks: {

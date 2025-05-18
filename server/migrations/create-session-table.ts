@@ -1,5 +1,5 @@
 import 'dotenv-esm/config';
-import { pool } from '../db';
+import { pool } from '../db.js';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';

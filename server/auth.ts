@@ -4,8 +4,8 @@ import { Express } from "express";
 import session from "express-session";
 import { scrypt, randomBytes, timingSafeEqual } from "crypto";
 import { promisify } from "util";
-import { storage } from "./pg-storage";
-import { User as SelectUser, insertUserSchema } from "@shared/schema";
+import { storage } from "./pg-storage.js";
+import { User as SelectUser, insertUserSchema } from "../shared/schema.js";
 
 declare global {
   namespace Express {
@@ -90,11 +90,13 @@ export function setupAuth(app: Express) {
         console.log('Data validated successfully:', {
           ...validatedData,
           password: '[REDACTED]'
-        });
+        });        if (!validatedData.success) {
+          return res.status(400).json({ message: "Invalid input" });
+        }
 
-        const existingUser = await storage.getUserByUsername(validatedData.username);
+        const existingUser = await storage.getUserByUsername(validatedData.data.username);
         if (existingUser) {
-          console.log('Username already exists:', validatedData.username);
+          console.log('Username already exists:', validatedData.data.username);
           return res.status(409).json({ message: "Username already exists" });
         }
 

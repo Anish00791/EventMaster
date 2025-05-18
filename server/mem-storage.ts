@@ -4,10 +4,10 @@ import type {
     Team,
     Registration,
     InsertUser
-  } from "@shared/schema";
+  } from "../shared/schema.js";
   import session from "express-session";
   import createMemoryStore from "memorystore";
-  import { IStorage } from "./storage.interface";
+  import { IStorage } from "./storage.interface.js";
   
   const MemoryStore = createMemoryStore(session);
   

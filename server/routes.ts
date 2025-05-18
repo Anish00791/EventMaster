@@ -1,8 +1,8 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
-import { setupAuth } from "./auth";
-import { PgStorage } from "./pg-storage";
-import { insertEventSchema } from "@shared/schema";
+import { setupAuth } from "./auth.js";
+import { PgStorage } from "./pg-storage.js";
+import { insertEventSchema } from "../shared/schema.js";
 import { z } from "zod";
 
 export async function registerRoutes(app: Express): Promise<Server> {

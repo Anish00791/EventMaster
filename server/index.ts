@@ -14,15 +14,14 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-app.use((req, res, next) => {
+app.use((req: express.Request, res: express.Response, next: express.NextFunction) => {
   const start = Date.now();
   const reqPath = req.path;
-  let capturedJsonResponse;
-
-  const originalResJson = res.json;
-  res.json = function (bodyJson, ...args) {
+  let capturedJsonResponse: unknown;
+  const originalResJson = res.json.bind(res);
+  res.json = function (bodyJson: unknown) {
     capturedJsonResponse = bodyJson;
-    return originalResJson.apply(res, [bodyJson, ...args]);
+    return originalResJson(bodyJson);
   };
 
   res.on('finish', () => {
@@ -44,9 +43,12 @@ app.use((req, res, next) => {
 
 (async () => {
   const server = await registerRoutes(app);
-
-  app.use((err, _req, res, _next) => {
-    const status = err.status || err.statusCode || 500;
+  app.use((err: Error & { status?: number; statusCode?: number }, 
+    _req: express.Request, 
+    res: express.Response, 
+    _next: express.NextFunction
+  ) => {
+    const status = (err as any).status || (err as any).statusCode || 500;
     const message = err.message || 'Internal Server Error';
     res.status(status).json({ message });
     console.error(err); // Log error instead of throwing in middleware
