@@ -7,8 +7,9 @@
     "dev": "tsx server/index.ts",
     "build": "cross-env LIGHTNINGCSS_SKIP_BINARY=1 npm run client:build && cross-env LIGHTNINGCSS_SKIP_BINARY=1 npm run server:build",
     "client:build": "vite build",
-    "server:build": "cross-env LIGHTNINGCSS_SKIP_BINARY=1 esbuild \"server/**/*.ts\" --bundle --outdir=dist/server --format=esm --platform=node --external:lightningcss --external:lightningcss/node/* --define:process.env.LIGHTNINGCSS_SKIP_BINARY=\\\"1\\\"",
-    "start": "cross-env NODE_ENV=production node dist/server/index.js",
+    "server:build": "cross-env LIGHTNINGCSS_SKIP_BINARY=1 esbuild \"server/**/*.ts\" --bundle --outdir=dist/server --format=esm --platform=node --external:fs,path,os,url,http,https,querystring,util,child_process,net,tls,stream,crypto,events,buffer,zlib,cluster,dgram,dns,module,readline,repl,tty,vm,constants,perf_hooks,lightningcss,lightningcss/node/* --define:process.env.LIGHTNINGCSS_SKIP_BINARY=\"1\"",
+    "start": "cross-env NODE_ENV=production node --enable-source-maps -r dotenv-esm/config dist/server/index.js",
+
     "check": "tsc",
     "db:generate": "drizzle-kit generate:pg",
     "db:push": "drizzle-kit push:pg",
