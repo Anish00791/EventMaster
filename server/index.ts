@@ -1,7 +1,7 @@
-// Load environment variables using dotenv
-import 'dotenv/config';
 
-// Replace require() with import
+import 'dotenv-esm/config';
+
+
 import path from 'path';
 import express from 'express';
 import { type Request, Response, NextFunction } from "express";
@@ -12,7 +12,7 @@ import cors from "cors";
 
 const app = express();
 app.use(cors({
-  origin: ["http://localhost:5000"], // Add your frontend URL(s) here
+  origin: ["http://localhost:5000"],
   credentials: true
 }));
 app.use(express.json());
