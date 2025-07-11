@@ -36,7 +36,7 @@ Event Master is a unified platform aimed at revolutionizing the management of co
 
 1. Clone the repository:
     ```sh
-    git clone https://github.com/abk700007/EventMaster.git
+    git clone https://github.com/Anish00791/EventMaster.git
     cd EventMaster
     ```
 
